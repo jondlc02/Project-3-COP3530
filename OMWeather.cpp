@@ -1,6 +1,44 @@
 #include "OMWeather.h"
 
-map<string, pair<unsigned int, double>> avgTemp(int, int)
+void weatherMap::addData(string fileName)
+{
+    string line, word;
+    vector <string> row;
+
+    fstream file(fileName, ios::in);
+    if (file.is_open())
+    {
+        while (getline(file, line))
+        {
+            row.clear();
+            stringstream str(line);
+            while(getline(str, word, ','))
+            {
+                row.push_back(word);
+                /*
+                 * index legend
+                 * 0 - precipitation
+                 * 1 - full date
+                 * 2 - month
+                 * 3 - week
+                 * 4 - year
+                 * 5 - city
+                 * 6 - code
+                 * 7 - city/state
+                 * 8 - state
+                 * 9 - avgTemp
+                 * 10 - maxTemp
+                 * 11 - minTemp
+                 * 12 - windDirection
+                 * 13 - windSpeed
+                 */
+            }
+            data[{row[1],row[7]}] = vector <double> {stod(row[0]), stod(row[9]), stod(row[10]), stod(row[11]), stod(row[13])};
+        }
+    }
+}
+
+map<string, pair<unsigned int, double>> weatherMap::avgTemp(int low, int high)
 {
     /*
     * Inputs are boundaries of temperature threshold, first int is the floor
@@ -13,7 +51,7 @@ map<string, pair<unsigned int, double>> avgTemp(int, int)
     */
 }
 
-map<string, pair<unsigned int, double>> minTemp(int)
+map<string, pair<unsigned int, double>> weatherMap::minTemp(int min)
 {
     /*
     * Input is minimum temperature desired
@@ -25,7 +63,7 @@ map<string, pair<unsigned int, double>> minTemp(int)
     */
 }
 
-map<string, pair<unsigned int, double>> maxTemp(int)
+map<string, pair<unsigned int, double>> weatherMap::maxTemp(int max)
 {
     /*
     * Input is maximum temperature desired
@@ -37,7 +75,7 @@ map<string, pair<unsigned int, double>> maxTemp(int)
     */
 }
 
-map<string, pair<unsigned int, double>> windSpd(int, int)
+map<string, pair<unsigned int, double>> weatherMap::windSpd(int low, int high)
 {
     /*
     * Input is threshold values for wind speed, first int is minimum desired wind
@@ -50,7 +88,7 @@ map<string, pair<unsigned int, double>> windSpd(int, int)
     */
 }
 
-map<string, pair<unsigned int, double>> precipitation(int, int)
+map<string, pair<unsigned int, double>> weatherMap::precipitation(int low, int high)
 {
     /*
     * Input is threshold values for precipitation, first int is minimum desired wind
