@@ -1,11 +1,11 @@
 #include "OMWeather.h"
 
-void weatherMap::addData(string fileName)
+void weatherMap::addData()
 {
     string line, word;
     vector <string> row;
 
-    fstream file(fileName, ios::in);
+    fstream file("weather.csv", ios::in);
     if (file.is_open())
     {
         while (getline(file, line))

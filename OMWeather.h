@@ -11,7 +11,7 @@ class weatherMap
     map<pair<string, string>, vector<double>> data;
 
     public:
-    void addData(string fileName);
+    void addData();
     map<string, pair<unsigned int, double>> avgTemp(int low, int high);
     map<string, pair<unsigned int, double>> minTemp(int min);
     map<string, pair<unsigned int, double>> maxTemp(int max);
