@@ -1,3 +1,4 @@
+#include "OMWeather.h"
 #include <iostream>
 
 int main() {

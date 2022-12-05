@@ -8,8 +8,6 @@ class weatherMap
 {
     map<pair<string, string>, vector<double>> data;
 
-
-
     public:
     map<string, pair<unsigned int, double>> avgTemp(int, int);
     map<string, pair<unsigned int, double>> minTemp(int);
