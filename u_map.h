@@ -2,6 +2,11 @@
 #include <vector>
 #include <string>
 #include <list>
+#include <fstream>
+#include <sstream>
+#include <iostream>
+#include <math.h>
+#include <iterator>
 using namespace std;
 
 class u_map
@@ -17,4 +22,10 @@ class u_map
     int hash(string, string);
     void insert(pair<string, string>, vector<double>);
     void rehash();
+    void addData();
+    vector<pair<int, string>> avgTemp(int, int);
+    vector<pair<int, string>> minTemp(int);
+    vector<pair<int, string>> maxTemp(int);
+    vector<pair<int, string>> windSpd(int, int);
+    vector<pair<int, string>> precip(int, int);
 };

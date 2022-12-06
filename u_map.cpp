@@ -1,6 +1,4 @@
 #include "u_map.h"
-#include <math.h>
-#include <iterator>
 
 u_map::u_map()
 {
@@ -29,6 +27,43 @@ int u_map::hash(string date, string location)
     return hashCode;
 }
 
+void u_map::addData()
+{
+    string line, word;
+    vector <string> row;
+
+    fstream file("weather.csv", ios::in);
+    getline(file, line); // Empties top with labels
+    while (getline(file, line))
+    {
+        stringstream str(line);
+        while (getline(str, word, ','))
+        {
+            row.push_back(word);
+            /*
+             * index legend
+             * 0 - precipitation
+             * 1 - full date
+             * 2 - month
+             * 3 - week
+             * 4 - year
+             * 5 - city
+             * 6 - code
+             * 7 - city/state
+             * 8 - state
+             * 9 - avgTemp
+             * 10 - maxTemp
+             * 11 - minTemp
+             * 12 - windDirection
+             * 13 - windSpeed
+             */
+        }
+        pair<string, string> dateLoca = make_pair(row[1], row[7]);
+        vector<double> data = {stod(row[0]), stod(row[9]), stod(row[10]), stod(row[11]), 
+                               stod(row[12]), stod(row[13])};
+        insert(dateLoca, data);
+    }
+}
 void u_map::insert(pair<string, string> dateLoca, vector<double> data)
 {
     int hashCode = hash(dateLoca.first, dateLoca.second);
@@ -66,4 +101,205 @@ void u_map::rehash() // I may scrap this and just make the hash table bigger by 
 
     delete[] table;
     this->table = temp;
+}
+
+vector<pair<int, string>> u_map::avgTemp(int low, int high)
+{
+    vector<pair<int, string>> results;
+    for (int i = 0; i < size_table; i++)
+    {
+        if (table[i].empty())
+        {
+            continue;
+        }
+        else
+        {
+            list<pair<pair<string, string>, vector<double>>>::iterator it;
+            for (it = table[i].begin(); it != table[i].end(); ++it)
+            {
+                if (low <= (*it).second[1] && (*it).second[1] <= high)
+                {
+                    if (results.size() == 0)
+                    {
+                        results.push_back(make_pair(1, (*it).first.second));
+                    }
+                    else
+                    {
+                        for (int j = 0; j < results.size(); j++)
+                        {
+                            if (results.at(j).second == (*it).first.second)
+                            {
+                                results.at(j).first++;
+                            }
+                            else
+                            {
+                                results.push_back(make_pair(1, (*it).first.second));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return results;
+}
+
+vector<pair<int, string>> u_map::minTemp(int low)
+{
+    vector<pair<int, string>> results;
+    for (int i = 0; i < size_table; i++)
+    {
+        if (table[i].empty())
+        {
+            continue;
+        }
+        else
+        {
+            list<pair<pair<string, string>, vector<double>>>::iterator it;
+            for (it = table[i].begin(); it != table[i].end(); ++it)
+            {
+                if (low <= (*it).second[3])
+                {
+                    if (results.size() == 0)
+                    {
+                        results.push_back(make_pair(1, (*it).first.second));
+                    }
+                    else
+                    {
+                        for (int j = 0; j < results.size(); j++)
+                        {
+                            if (results.at(j).second == (*it).first.second)
+                            {
+                                results.at(j).first++;
+                            }
+                            else
+                            {
+                                results.push_back(make_pair(1, (*it).first.second));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+vector<pair<int, string>> u_map::maxTemp(int high)
+{
+    vector<pair<int, string>> results;
+    for (int i = 0; i < size_table; i++)
+    {
+        if (table[i].empty())
+        {
+            continue;
+        }
+        else
+        {
+            list<pair<pair<string, string>, vector<double>>>::iterator it;
+            for (it = table[i].begin(); it != table[i].end(); ++it)
+            {
+                if (high <= (*it).second[3])
+                {
+                    if (results.size() == 0)
+                    {
+                        results.push_back(make_pair(1, (*it).first.second));
+                    }
+                    else
+                    {
+                        for (int j = 0; j < results.size(); j++)
+                        {
+                            if (results.at(j).second == (*it).first.second)
+                            {
+                                results.at(j).first++;
+                            }
+                            else
+                            {
+                                results.push_back(make_pair(1, (*it).first.second));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+vector<pair<int, string>> u_map::windSpd(int low, int high)
+{
+    vector<pair<int, string>> results;
+    for (int i = 0; i < size_table; i++)
+    {
+        if (table[i].empty())
+        {
+            continue;
+        }
+        else
+        {
+            list<pair<pair<string, string>, vector<double>>>::iterator it;
+            for (it = table[i].begin(); it != table[i].end(); ++it)
+            {
+                if (low <= (*it).second[5] &&  (*it).second[5] <= high)
+                {
+                    if (results.size() == 0)
+                    {
+                        results.push_back(make_pair(1, (*it).first.second));
+                    }
+                    else
+                    {
+                        for (int j = 0; j < results.size(); j++)
+                        {
+                            if (results.at(j).second == (*it).first.second)
+                            {
+                                results.at(j).first++;
+                            }
+                            else
+                            {
+                                results.push_back(make_pair(1, (*it).first.second));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+vector<pair<int, string>> u_map::precip(int low, int high)
+{
+    vector<pair<int, string>> results;
+    for (int i = 0; i < size_table; i++)
+    {
+        if (table[i].empty())
+        {
+            continue;
+        }
+        else
+        {
+            list<pair<pair<string, string>, vector<double>>>::iterator it;
+            for (it = table[i].begin(); it != table[i].end(); ++it)
+            {
+                if (low <= (*it).second[0] && (*it).second[0] <= high)
+                {
+                    if (results.size() == 0)
+                    {
+                        results.push_back(make_pair(1, (*it).first.second));
+                    }
+                    else
+                    {
+                        for (int j = 0; j < results.size(); j++)
+                        {
+                            if (results.at(j).second == (*it).first.second)
+                            {
+                                results.at(j).first++;
+                            }
+                            else
+                            {
+                                results.push_back(make_pair(1, (*it).first.second));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
