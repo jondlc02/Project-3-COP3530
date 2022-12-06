@@ -1,21 +1,28 @@
-#include "OMWeather.h"
+
+#include "test.h"
 
 // Method for adding data to tree
 void weatherMap::addData()
 {
-    string line, word;
+    string line;
+    string word;
     vector <string> row;
 
-    fstream file("weather.csv", ios::in);
-    if (file.is_open())
+    fstream file;
+    file.open("weather.csv", ios::in);
+    //fstream file("weather.csv", ios::in);
+    getline(file, line); //remove titles
+    while (getline(file, line))
     {
-        while (getline(file, line))
+        row.clear();
+        stringstream str(line);
+        while(getline(str, word, '"'))
         {
-            row.clear();
-            stringstream str(line);
-            while(getline(str, word, ','))
-            {
-                row.push_back(word);
+          if (word == "" || word == ",")
+          {
+            continue;
+          }
+            row.push_back(word);
                 /*
                  * index legend
                  * 0 - precipitation
@@ -33,16 +40,15 @@ void weatherMap::addData()
                  * 12 - windDirection
                  * 13 - windSpeed
                  */
-            }
-            insert({row[1], row[7]}, stoi(row[9]), stoi(row[11]), stoi(row[10]), stod(row[0]), stod(row[13]));
         }
+        insert({row[1], row[7]}, stoi(row[9]), stoi(row[11]), stoi(row[10]), stod(row[0]), stod(row[13]));
     }
 }
 
 // Constructor && Destructor
 weatherMap::weatherMap() {
     root = nullptr;
-    this->addData();
+    //this->addData();
 }
 
 weatherMap::~weatherMap() {
@@ -106,48 +112,66 @@ vector <pair <int, string>> weatherMap::precipitation(double low, double high) {
 
 // Main command function helpers
 vector <pair <int, string>> weatherMap::avgTempHelper(Node *node, double low, double high) {
-    vector <pair <int, string>> results;
     if (node == nullptr)
         cout << "";
     else {
         avgTempHelper(node->left, low, high);
         if (node->avgTemp >= low && node->avgTemp <= high) {
-            if (results.empty())
-                results.push_back({1, node->dateLocation.second});
-            else if(searchVector(results, node->dateLocation.second)) {
-                for (auto p : results) {
-                    if (p.second == node->dateLocation.second) {
-                        p.first++;
+          if (results.size() == 0)
+                    {
+                        results.push_back(make_pair(1, node->dateLocation.second));
                     }
-                }
-            }
-            else
-                results.push_back({1, node->dateLocation.second});
-        }
+                    else
+                    {
+                        for (int j = 0; j < results.size(); j++)
+                        {
+                            if (results.at(j).second == node->dateLocation.second)
+                            {
+                                results.at(j).first++;
+                                break;
+                            }
+                            else
+                            {
+                                results.push_back(make_pair(1, node->dateLocation.second));
+                                break;
+                            }
+                        }
+                    }
+          }
         avgTempHelper(node->right, low, high);
+        
     }
     sort(results.begin(), results.end(), greater<pair<int, string>>());
     return results;
+    
 }
 
 vector <pair <int, string>> weatherMap::minTempHelper(Node *node, double min) {
-    vector <pair <int, string>> results;
     if (node == nullptr)
         cout << "";
     else {
         minTempHelper(node->left, min);
         if (node->minTemp >= min) {
-            if (results.empty())
-                results.push_back({1, node->dateLocation.second});
-            else if(searchVector(results, node->dateLocation.second)) {
-                for (auto p : results) {
-                    if (p.second == node->dateLocation.second) {
-                        p.first++;
+             if (results.size() == 0)
+                    {
+                        results.push_back(make_pair(1, node->dateLocation.second));
                     }
-                }
-            }
-            else
-                results.push_back({1, node->dateLocation.second});
+                    else
+                    {
+                        for (int j = 0; j < results.size(); j++)
+                        {
+                            if (results.at(j).second == node->dateLocation.second)
+                            {
+                                results.at(j).first++;
+                                break;
+                            }
+                            else
+                            {
+                                results.push_back(make_pair(1, node->dateLocation.second));
+                                break;
+                            }
+                        }
+                    }
         }
         minTempHelper(node->right, min);
     }
@@ -156,23 +180,31 @@ vector <pair <int, string>> weatherMap::minTempHelper(Node *node, double min) {
 }
 
 vector <pair <int, string>> weatherMap::maxTempHelper(Node *node, double max) {
-    vector <pair <int, string>> results;
     if (node == nullptr)
         cout << "";
     else {
         maxTempHelper(node->left, max);
         if (node->minTemp <= max) {
-            if (results.empty())
-                results.push_back({1, node->dateLocation.second});
-            else if(searchVector(results, node->dateLocation.second)) {
-                for (auto p : results) {
-                    if (p.second == node->dateLocation.second) {
-                        p.first++;
+             if (results.size() == 0)
+                    {
+                        results.push_back(make_pair(1, node->dateLocation.second));
                     }
-                }
-            }
-            else
-                results.push_back({1, node->dateLocation.second});
+                    else
+                    {
+                        for (int j = 0; j < results.size(); j++)
+                        {
+                            if (results.at(j).second == node->dateLocation.second)
+                            {
+                                results.at(j).first++;
+                                break;
+                            }
+                            else
+                            {
+                                results.push_back(make_pair(1, node->dateLocation.second));
+                                break;
+                            }
+                        }
+                    }
         }
         maxTempHelper(node->right, max);
     }
@@ -181,23 +213,31 @@ vector <pair <int, string>> weatherMap::maxTempHelper(Node *node, double max) {
 }
 
 vector <pair <int, string>> weatherMap::windSpeedHelper(Node *node, double low, double high) {
-    vector <pair <int, string>> results;
     if (node == nullptr)
         cout << "";
     else {
         windSpeedHelper(node->left, low, high);
         if (node->windSpeed >= low && node->windSpeed <= high) {
-            if (results.empty())
-                results.push_back({1, node->dateLocation.second});
-            else if(searchVector(results, node->dateLocation.second)) {
-                for (auto p : results) {
-                    if (p.second == node->dateLocation.second) {
-                        p.first++;
+             if (results.size() == 0)
+                    {
+                        results.push_back(make_pair(1, node->dateLocation.second));
                     }
-                }
-            }
-            else
-                results.push_back({1, node->dateLocation.second});
+                    else
+                    {
+                        for (int j = 0; j < results.size(); j++)
+                        {
+                            if (results.at(j).second == node->dateLocation.second)
+                            {
+                                results.at(j).first++;
+                                break;
+                            }
+                            else
+                            {
+                                results.push_back(make_pair(1, node->dateLocation.second));
+                                break;
+                            }
+                        }
+                    }
         }
         windSpeedHelper(node->right, low, high);
     }
@@ -206,24 +246,32 @@ vector <pair <int, string>> weatherMap::windSpeedHelper(Node *node, double low, 
 }
 
 vector <pair <int, string>> weatherMap::precipitationHelper(Node *node, double low, double high) {
-    vector <pair <int, string>> results;
     if (node == nullptr)
         cout << "";
     else {
         precipitationHelper(node->left, low, high);
         if (node->precipitation >= low && node->precipitation <= high) {
-            if (results.empty())
-                results.push_back({1, node->dateLocation.second});
-            else if(searchVector(results, node->dateLocation.second)) {
-                for (auto p : results) {
-                    if (p.second == node->dateLocation.second) {
-                        p.first++;
+             if (results.size() == 0)
+                    {
+                        results.push_back(make_pair(1, node->dateLocation.second));
                     }
-                }
+                    else
+                    {
+                        for (int j = 0; j < results.size(); j++)
+                        {
+                            if (results.at(j).second == node->dateLocation.second)
+                            {
+                                results.at(j).first++;
+                                break;
+                            }
+                            else
+                            {
+                                results.push_back(make_pair(1, node->dateLocation.second));
+                                break;
+                            }
+                        }
+                    }
             }
-            else
-                results.push_back({1, node->dateLocation.second});
-        }
         precipitationHelper(node->right, low, high);
     }
     sort(results.begin(), results.end(), greater<pair<int, string>>());
@@ -253,6 +301,7 @@ Node *weatherMap::rotateRight(Node *node) {
     newParent->right = node;
     node->left = grandchild;
     return newParent;
+
 }
 
 Node *weatherMap::rotateLeftRight(Node *node) {
@@ -275,7 +324,7 @@ Node *weatherMap::rotateRightLeft(Node *node) {
     grandChild->left = greatGrandChild;
     Node* newParent = rotateLeft(node);
     return newParent;
-};
+}
 
 // Additional helper functions
 void weatherMap::deleteMap(Node *node) {
