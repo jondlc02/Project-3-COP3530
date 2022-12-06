@@ -126,7 +126,7 @@ vector <pair <int, string>> weatherMap::avgTempHelper(Node *node, double low, do
         }
         avgTempHelper(node->right, low, high);
     }
-    sort(results.begin(), results.end());
+    sort(results.begin(), results.end(), greater<pair<int, string>>());
     return results;
 }
 
@@ -151,7 +151,7 @@ vector <pair <int, string>> weatherMap::minTempHelper(Node *node, double min) {
         }
         minTempHelper(node->right, min);
     }
-    sort(results.begin(), results.end());
+    sort(results.begin(), results.end(), greater<pair<int, string>>());
     return results;
 }
 
@@ -176,7 +176,7 @@ vector <pair <int, string>> weatherMap::maxTempHelper(Node *node, double max) {
         }
         maxTempHelper(node->right, max);
     }
-    sort(results.begin(), results.end());
+    sort(results.begin(), results.end(), greater<pair<int, string>>());
     return results;
 }
 
@@ -201,7 +201,7 @@ vector <pair <int, string>> weatherMap::windSpeedHelper(Node *node, double low, 
         }
         windSpeedHelper(node->right, low, high);
     }
-    sort(results.begin(), results.end());
+    sort(results.begin(), results.end(), greater<pair<int, string>>());
     return results;
 }
 
@@ -226,7 +226,7 @@ vector <pair <int, string>> weatherMap::precipitationHelper(Node *node, double l
         }
         precipitationHelper(node->right, low, high);
     }
-    sort(results.begin(), results.end());
+    sort(results.begin(), results.end(), greater<pair<int, string>>());
     return results;
 }
 
