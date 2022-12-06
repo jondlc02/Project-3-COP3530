@@ -182,6 +182,7 @@ vector<pair<int, string>> u_map::minTemp(int low)
             }
         }
     }
+    return results;
 }
 
 vector<pair<int, string>> u_map::maxTemp(int high)
@@ -222,6 +223,7 @@ vector<pair<int, string>> u_map::maxTemp(int high)
             }
         }
     }
+    return results;
 }
 
 vector<pair<int, string>> u_map::windSpd(int low, int high)
@@ -262,6 +264,7 @@ vector<pair<int, string>> u_map::windSpd(int low, int high)
             }
         }
     }
+    return results;
 }
 
 vector<pair<int, string>> u_map::precip(int low, int high)
@@ -302,4 +305,5 @@ vector<pair<int, string>> u_map::precip(int low, int high)
             }
         }
     }
+    return results;
 }
