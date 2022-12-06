@@ -3,14 +3,30 @@
 #include <algorithm>
 #include <iostream>
 #include <vector>
+using namespace std;
 
 int main()
 {
     bool menu = true;
     int userMap;
     int userOption;
+    clock_t startOrdBuild, endOrdBuild, startUnBuild, endUnBuild;
+
+    cout << "Building data structures..." << endl;
+    startOrdBuild = clock();
     weatherMap ordered;
+    endOrdBuild = clock();
+    startUnBuild = clock();
     u_map unordered;
+    endUnBuild = clock();
+
+    cout << "Time to build Unordered Map: "
+                 << (endUnBuild - startUnBuild) / (float)CLOCKS_PER_SEC
+                 << " seconds" << endl;
+    cout << "Time of to build Ordered Map: "
+                 << (endOrdBuild - startOrdBuild) / (float)CLOCKS_PER_SEC 
+                 << " seconds" << endl << endl;
+
     while (menu)
     {
         cout << "Welcome to Weather Sort!" << endl;
@@ -25,6 +41,7 @@ int main()
         cout << "6). Exit" << endl;
         cout << "Enter option: ";
         cin >> userOption;
+        cout << endl;
 
         clock_t startOrdered, endOrdered, startUnordered, endUnordered;
 
@@ -42,29 +59,31 @@ int main()
             startUnordered = clock();
             vector<pair<int, string>> resultsUnordered = unordered.avgTemp(min, max);
             endUnordered = clock();
+
             cout << "Your optimal location(s) are: " << endl;
+            if (resultsUnordered.size() != 0)
+            {
+                cout << resultsUnordered[0].second;
+            }
             for (int i = 0; i < resultsUnordered.size(); i++)
             {
-                if (i == 0)
+                if (resultsUnordered[i].first == resultsUnordered[0].first)
                 {
-                    cout << resultsUnordered[i].second << " ";
-                }
-                else if (resultsUnordered[i].first == resultsUnordered[0].first)
-                {
-                    cout << resultsUnordered[i].second << " ";
+                    cout << " | " << resultsUnordered[i].second;
                 }
                 else
                 {
                     break;
                 }
             }
+            cout << endl;
 
             // ordered
             startOrdered = clock();
             vector<pair<int, string>> resultsOrdered = ordered.avgTemp(min, max);
             endOrdered = clock();
 
-            cout << "Time of Unordered Map: "
+            cout << endl << "Time of Unordered Map: "
                  << (endUnordered - startUnordered) / (float)CLOCKS_PER_SEC
                  << " seconds" << endl;
             cout << "Time of Ordered Map: "
@@ -86,27 +105,24 @@ int main()
             endUnordered = clock();
 
             cout << "Your optimal location(s) are: " << endl;
-
             // this should print out first element of vector and those with the same
             // freq. as it
-            for (int i = 0; i < resultsUnordered.size(); i++)
+            if (resultsUnordered.size() != 0)
             {
-                if (i == 0)
+                cout << resultsUnordered[0].second;
+            }
+            for (int i = 1; i < resultsUnordered.size(); i++)
+            {
+                if (resultsUnordered[i].first == resultsUnordered[0].first)
                 {
-                    cout << resultsUnordered[i].second << " ";
-                }
-                else if (resultsUnordered[i].first == resultsUnordered[0].first)
-                {
-                    cout << resultsUnordered[i].second << " ";
+                    cout << " | " << resultsUnordered[i].second;
                 }
                 else
                 {
                     break;
                 }
             }
-
-            /* this is just to test
-            cout << results[0].second << endl; */
+            cout << endl;
 
             // ordered
             startOrdered = clock();
@@ -133,22 +149,24 @@ int main()
             startUnordered = clock();
             vector<pair<int, string>> resultsUnordered = unordered.maxTemp(maxTemperature);
             endUnordered = clock();
+
             cout << "Your optimal location(s) are: " << endl;
-            for (int i = 0; i < resultsUnordered.size(); i++)
+            if (resultsUnordered.size() != 0)
             {
-                if (i == 0)
-                {
-                    cout << resultsUnordered[i].second << " ";
-                }
+                cout << resultsUnordered[0].second;
+            }
+            for (int i = 1; i < resultsUnordered.size(); i++)
+            {
                 if (resultsUnordered[i].first == resultsUnordered[0].first)
                 {
-                    cout << resultsUnordered[i].second << " ";
+                    cout << " | " << resultsUnordered[i].second;
                 }
                 else
                 {
                     break;
                 }
             }
+            cout << endl;
 
             // ordered
 
@@ -178,22 +196,24 @@ int main()
             startUnordered = clock();
             vector<pair<int, string>> resultsUnordered = unordered.windSpd(minwindSpeed, maxWindSpeed);
             endUnordered = clock();
+
             cout << "Your optimal location(s) are: " << endl;
-            for (int i = 0; i < resultsUnordered.size(); i++)
+            if (resultsUnordered.size() != 0)
             {
-                if (i == 0)
-                {
-                    cout << resultsUnordered[i].second << " ";
-                }
+                cout << resultsUnordered[0].second;
+            }
+            for (int i = 1; i < resultsUnordered.size(); i++)
+            {
                 if (resultsUnordered[i].first == resultsUnordered[0].first)
                 {
-                    cout << resultsUnordered[i].second << " ";
+                    cout << " | " << resultsUnordered[i].second;
                 }
                 else
                 {
                     break;
                 }
             }
+            cout << endl;
 
             // ordered
             startOrdered = clock();
@@ -222,22 +242,24 @@ int main()
             startUnordered = clock();
             vector<pair<int, string>> results = unordered.precip(minPrecipitation, maxPrecipitation);
             endUnordered = clock();
+
             cout << "Your optimal location(s) are: " << endl;
+            if (results.size() != 0)
+            {
+                cout << results[0].second;
+            }
             for (int i = 0; i < results.size(); i++)
             {
-                if (i == 0)
-                {
-                    cout << results[i].second << endl;
-                }
                 if (results[i].first == results[0].first)
                 {
-                    cout << results[i].second << endl;
+                    cout << " | " << results[i].second;
                 }
                 else
                 {
                     break;
                 }
             }
+            cout << endl;
 
             // ordered
             startOrdered = clock();
@@ -264,12 +286,17 @@ int main()
         }
         while (!menu)
         {
+            if (userOption == 6)
+            {
+                break;
+            }
             int userInput;
-            cout << "Would you like to select a menu option again?" << endl;
+            cout << endl << "Would you like to select a menu option again?" << endl;
             cout << "1). Yes" << endl;
             cout << "2). No" << endl;
             cout << "Enter option: ";
             cin >> userInput;
+            cout << endl;
 
             if (userInput == 1)
             {
