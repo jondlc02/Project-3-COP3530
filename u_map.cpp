@@ -7,6 +7,7 @@ u_map::u_map()
     this->num_elements = 0;
     this->size_table = 20;
     this->table = new list<pair<pair<string, string>, vector<double>>>[size_table];
+    addData();
 }
 
 u_map::~u_map()
