@@ -4,7 +4,7 @@ u_map::u_map()
 {
     this->max_load = 0.8;
     this->num_elements = 0;
-    this->size_table = 20;
+    this->size_table = 30000;
     this->table = new list<pair<pair<string, string>, vector<double>>>[size_table];
 }
 
@@ -32,13 +32,17 @@ void u_map::addData()
     string line, word;
     vector <string> row;
 
-    fstream file("weather.csv", ios::in);
+    ifstream file("weather.csv", ios::binary);
     getline(file, line); // Empties top with labels
     while (getline(file, line))
     {
         stringstream str(line);
-        while (getline(str, word, ','))
+        while (getline(str, word, '"'))
         {
+            if (word == "" || word == ",")
+            {
+                continue;
+            }
             row.push_back(word);
             /*
              * index legend
@@ -62,15 +66,16 @@ void u_map::addData()
         vector<double> data = {stod(row[0]), stod(row[9]), stod(row[10]), stod(row[11]), 
                                stod(row[12]), stod(row[13])};
         insert(dateLoca, data);
+        row.clear();
     }
 }
 void u_map::insert(pair<string, string> dateLoca, vector<double> data)
 {
     int hashCode = hash(dateLoca.first, dateLoca.second);
-    int index = hashCode % size_table;
+    int index = abs(hashCode) % size_table;
     table[index].push_back(make_pair(dateLoca, data));
     this->num_elements++;
-    if ((this->num_elements / this->size_table) >= max_load)
+    if ((this->num_elements / (double)this->size_table) >= max_load)
     {
         rehash();
     }
@@ -93,7 +98,7 @@ void u_map::rehash() // I may scrap this and just make the hash table bigger by 
             for (it = table[i].begin(); it != table[i].end(); ++it)
             {
                 int hashCode = hash((*it).first.first, (*it).first.second);
-                int index = hashCode % size_table;
+                int index = abs(hashCode) % size_table;
                 temp[index].push_back(make_pair((*it).first, (*it).second));
             }
         }
@@ -106,6 +111,7 @@ void u_map::rehash() // I may scrap this and just make the hash table bigger by 
 vector<pair<int, string>> u_map::avgTemp(int low, int high)
 {
     vector<pair<int, string>> results;
+    cout << size_table << " " << num_elements << endl;
     for (int i = 0; i < size_table; i++)
     {
         if (table[i].empty())
