@@ -1,10 +1,11 @@
 #include "u_map.h"
+#include <algorithm>
 
 u_map::u_map()
 {
     this->max_load = 0.8;
     this->num_elements = 0;
-    this->size_table = 30000;
+    this->size_table = 20;
     this->table = new list<pair<pair<string, string>, vector<double>>>[size_table];
 }
 
@@ -22,7 +23,7 @@ int u_map::hash(string date, string location)
     }
     for (int i = 0; i < date.length(); i++)
     {
-        hashCode += int(date[i])*pow(31, date.length() - (i + 1)) ;
+        hashCode += int(date[i])*pow(3, date.length() - (i + 1)) ;
     }
     return hashCode;
 }
@@ -136,10 +137,12 @@ vector<pair<int, string>> u_map::avgTemp(int low, int high)
                             if (results.at(j).second == (*it).first.second)
                             {
                                 results.at(j).first++;
+                                break;
                             }
                             else
                             {
                                 results.push_back(make_pair(1, (*it).first.second));
+                                break;
                             }
                         }
                     }
@@ -147,6 +150,7 @@ vector<pair<int, string>> u_map::avgTemp(int low, int high)
             }
         }
     }
+    sort(results.begin(), results.end(), greater<pair<int, string>>());
     return results;
 }
 
@@ -177,10 +181,12 @@ vector<pair<int, string>> u_map::minTemp(int low)
                             if (results.at(j).second == (*it).first.second)
                             {
                                 results.at(j).first++;
+                                break;
                             }
                             else
                             {
                                 results.push_back(make_pair(1, (*it).first.second));
+                                break;
                             }
                         }
                     }
@@ -188,6 +194,7 @@ vector<pair<int, string>> u_map::minTemp(int low)
             }
         }
     }
+    sort(results.begin(), results.end(), greater<pair<int, string>>());
     return results;
 }
 
@@ -218,10 +225,12 @@ vector<pair<int, string>> u_map::maxTemp(int high)
                             if (results.at(j).second == (*it).first.second)
                             {
                                 results.at(j).first++;
+                                break;
                             }
                             else
                             {
                                 results.push_back(make_pair(1, (*it).first.second));
+                                break;
                             }
                         }
                     }
@@ -229,6 +238,7 @@ vector<pair<int, string>> u_map::maxTemp(int high)
             }
         }
     }
+    sort(results.begin(), results.end(), greater<pair<int, string>>());
     return results;
 }
 
@@ -259,10 +269,12 @@ vector<pair<int, string>> u_map::windSpd(int low, int high)
                             if (results.at(j).second == (*it).first.second)
                             {
                                 results.at(j).first++;
+                                break;
                             }
                             else
                             {
                                 results.push_back(make_pair(1, (*it).first.second));
+                                break;
                             }
                         }
                     }
@@ -270,6 +282,7 @@ vector<pair<int, string>> u_map::windSpd(int low, int high)
             }
         }
     }
+    sort(results.begin(), results.end(), greater<pair<int, string>>());
     return results;
 }
 
@@ -300,10 +313,12 @@ vector<pair<int, string>> u_map::precip(int low, int high)
                             if (results.at(j).second == (*it).first.second)
                             {
                                 results.at(j).first++;
+                                break;
                             }
                             else
                             {
                                 results.push_back(make_pair(1, (*it).first.second));
+                                break;
                             }
                         }
                     }
@@ -311,5 +326,6 @@ vector<pair<int, string>> u_map::precip(int low, int high)
             }
         }
     }
+    sort(results.begin(), results.end(), greater<pair<int, string>>());
     return results;
 }
