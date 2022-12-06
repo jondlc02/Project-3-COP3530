@@ -1,5 +1,4 @@
-
-#include "test.h"
+#include "ordered.h"
 
 // Method for adding data to tree
 void weatherMap::addData()
@@ -48,7 +47,7 @@ void weatherMap::addData()
 // Constructor && Destructor
 weatherMap::weatherMap() {
     root = nullptr;
-    //this->addData();
+    this->addData();
 }
 
 weatherMap::~weatherMap() {
@@ -91,53 +90,62 @@ Node* weatherMap::insertHelper(Node *&root, pair <string, string> dateLocation, 
 
 // Main command functions
 vector <pair <int, string>> weatherMap::avgTemp(double low, double high) {
+    results.clear();
     return avgTempHelper(this->root, low, high);
 }
 
 vector <pair <int, string>> weatherMap::minTemp(double min) {
-    return minTempHelper(this->root, min);
+    results.clear();
+    minTempHelper(this->root, min);
+    sort(results.begin(), results.end(), greater<pair<int, string>>());
+    return results;
 }
 
 vector <pair <int, string>> weatherMap::maxTemp(double max) {
+    results.clear();
     return maxTempHelper(this->root, max);
 }
 
 vector <pair <int, string>> weatherMap::windSpeed(double low, double high) {
+    results.clear();
     return windSpeedHelper(this->root, low, high);
 }
 
 vector <pair <int, string>> weatherMap::precipitation(double low, double high) {
+    results.clear();
     return precipitationHelper(this->root, low, high);
 }
 
 // Main command function helpers
 vector <pair <int, string>> weatherMap::avgTempHelper(Node *node, double low, double high) {
     if (node == nullptr)
-        cout << "";
+        return results;
     else {
         avgTempHelper(node->left, low, high);
-        if (node->avgTemp >= low && node->avgTemp <= high) {
-          if (results.size() == 0)
+        if (node->avgTemp >= low && node->avgTemp <= high) 
+        {
+            if (results.size() == 0)
+            {
+                results.push_back(make_pair(1, node->dateLocation.second));
+            }
+            else
+            {
+                bool unique = true;
+                for (int j = 0; j < results.size(); j++)
+                {
+                    if (results.at(j).second == node->dateLocation.second)
                     {
-                        results.push_back(make_pair(1, node->dateLocation.second));
+                        unique = false;
+                        results.at(j).first++;
+                        break;
                     }
-                    else
-                    {
-                        for (int j = 0; j < results.size(); j++)
-                        {
-                            if (results.at(j).second == node->dateLocation.second)
-                            {
-                                results.at(j).first++;
-                                break;
-                            }
-                            else
-                            {
-                                results.push_back(make_pair(1, node->dateLocation.second));
-                                break;
-                            }
-                        }
-                    }
-          }
+                }
+                if (unique)
+                {
+                    results.push_back(make_pair(1, node->dateLocation.second));
+                }
+            }
+        }
         avgTempHelper(node->right, low, high);
         
     }
@@ -148,63 +156,67 @@ vector <pair <int, string>> weatherMap::avgTempHelper(Node *node, double low, do
 
 vector <pair <int, string>> weatherMap::minTempHelper(Node *node, double min) {
     if (node == nullptr)
-        cout << "";
-    else {
+        return results;
+    else 
+    {
         minTempHelper(node->left, min);
-        if (node->minTemp >= min) {
-             if (results.size() == 0)
+        if (node->minTemp >= min) 
+        {
+            if (results.size() == 0)
+            {
+                results.push_back(make_pair(1, node->dateLocation.second));
+            }
+            else
+            {
+                bool unique = true;
+                for (int j = 0; j < results.size(); j++)
+                {
+                    if (results.at(j).second == node->dateLocation.second)
                     {
-                        results.push_back(make_pair(1, node->dateLocation.second));
+                        unique = false;
+                        results.at(j).first++;
+                        break;
                     }
-                    else
-                    {
-                        for (int j = 0; j < results.size(); j++)
-                        {
-                            if (results.at(j).second == node->dateLocation.second)
-                            {
-                                results.at(j).first++;
-                                break;
-                            }
-                            else
-                            {
-                                results.push_back(make_pair(1, node->dateLocation.second));
-                                break;
-                            }
-                        }
-                    }
+                }
+                if (unique)
+                {
+                    results.push_back(make_pair(1, node->dateLocation.second));
+                }
+            }
         }
         minTempHelper(node->right, min);
     }
-    sort(results.begin(), results.end(), greater<pair<int, string>>());
     return results;
 }
 
 vector <pair <int, string>> weatherMap::maxTempHelper(Node *node, double max) {
     if (node == nullptr)
-        cout << "";
+        return results;
     else {
         maxTempHelper(node->left, max);
-        if (node->minTemp <= max) {
-             if (results.size() == 0)
+        if (node->minTemp <= max) 
+        {
+            if (results.size() == 0)
+            {
+                results.push_back(make_pair(1, node->dateLocation.second));
+            }
+            else
+            {
+                bool unique = true;
+                for (int j = 0; j < results.size(); j++)
+                {
+                    if (results.at(j).second == node->dateLocation.second)
                     {
-                        results.push_back(make_pair(1, node->dateLocation.second));
+                        unique = false;
+                        results.at(j).first++;
+                        break;
                     }
-                    else
-                    {
-                        for (int j = 0; j < results.size(); j++)
-                        {
-                            if (results.at(j).second == node->dateLocation.second)
-                            {
-                                results.at(j).first++;
-                                break;
-                            }
-                            else
-                            {
-                                results.push_back(make_pair(1, node->dateLocation.second));
-                                break;
-                            }
-                        }
-                    }
+                }
+                if (unique)
+                {
+                    results.push_back(make_pair(1, node->dateLocation.second));
+                }
+            }
         }
         maxTempHelper(node->right, max);
     }
@@ -214,30 +226,32 @@ vector <pair <int, string>> weatherMap::maxTempHelper(Node *node, double max) {
 
 vector <pair <int, string>> weatherMap::windSpeedHelper(Node *node, double low, double high) {
     if (node == nullptr)
-        cout << "";
+        return results;
     else {
         windSpeedHelper(node->left, low, high);
-        if (node->windSpeed >= low && node->windSpeed <= high) {
+        if (node->windSpeed >= low && node->windSpeed <= high) 
+        {
              if (results.size() == 0)
+            {
+                results.push_back(make_pair(1, node->dateLocation.second));
+            }
+            else
+            {
+                bool unique = true;
+                for (int j = 0; j < results.size(); j++)
+                {
+                    if (results.at(j).second == node->dateLocation.second)
+                    {
+                        unique = false;
+                        results.at(j).first++;
+                        break;
+                    }
+                }
+                if (unique)
                     {
                         results.push_back(make_pair(1, node->dateLocation.second));
                     }
-                    else
-                    {
-                        for (int j = 0; j < results.size(); j++)
-                        {
-                            if (results.at(j).second == node->dateLocation.second)
-                            {
-                                results.at(j).first++;
-                                break;
-                            }
-                            else
-                            {
-                                results.push_back(make_pair(1, node->dateLocation.second));
-                                break;
-                            }
-                        }
-                    }
+            }
         }
         windSpeedHelper(node->right, low, high);
     }
@@ -247,31 +261,33 @@ vector <pair <int, string>> weatherMap::windSpeedHelper(Node *node, double low, 
 
 vector <pair <int, string>> weatherMap::precipitationHelper(Node *node, double low, double high) {
     if (node == nullptr)
-        cout << "";
+        return results;
     else {
         precipitationHelper(node->left, low, high);
-        if (node->precipitation >= low && node->precipitation <= high) {
-             if (results.size() == 0)
-                    {
-                        results.push_back(make_pair(1, node->dateLocation.second));
-                    }
-                    else
-                    {
-                        for (int j = 0; j < results.size(); j++)
-                        {
-                            if (results.at(j).second == node->dateLocation.second)
-                            {
-                                results.at(j).first++;
-                                break;
-                            }
-                            else
-                            {
-                                results.push_back(make_pair(1, node->dateLocation.second));
-                                break;
-                            }
-                        }
-                    }
+        if (node->precipitation >= low && node->precipitation <= high) 
+        {
+            if (results.size() == 0)
+            {
+                results.push_back(make_pair(1, node->dateLocation.second));
             }
+            else
+            {
+                bool unique = true;
+                for (int j = 0; j < results.size(); j++)
+                {
+                    if (results.at(j).second == node->dateLocation.second)
+                    {
+                        unique = false;
+                        results.at(j).first++;
+                        break;
+                    }
+                }
+                if (unique)
+                {
+                    results.push_back(make_pair(1, node->dateLocation.second));
+                }
+            }
+        }
         precipitationHelper(node->right, low, high);
     }
     sort(results.begin(), results.end(), greater<pair<int, string>>());

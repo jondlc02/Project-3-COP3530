@@ -5,7 +5,7 @@ u_map::u_map()
 {
     this->max_load = 0.8;
     this->num_elements = 0;
-    this->size_table = 20;
+    this->size_table = 31;
     this->table = new list<pair<pair<string, string>, vector<double>>>[size_table];
     addData();
 }
@@ -113,7 +113,6 @@ void u_map::rehash() // I may scrap this and just make the hash table bigger by 
 vector<pair<int, string>> u_map::avgTemp(int low, int high)
 {
     vector<pair<int, string>> results;
-    cout << size_table << " " << num_elements << endl;
     for (int i = 0; i < size_table; i++)
     {
         if (table[i].empty())
@@ -133,18 +132,20 @@ vector<pair<int, string>> u_map::avgTemp(int low, int high)
                     }
                     else
                     {
+                        bool unique = true;
                         for (int j = 0; j < results.size(); j++)
                         {
                             if (results.at(j).second == (*it).first.second)
                             {
                                 results.at(j).first++;
+                                unique = false;
                                 break;
                             }
-                            else
-                            {
-                                results.push_back(make_pair(1, (*it).first.second));
-                                break;
-                            }
+                        }
+                        
+                        if (unique)
+                        {
+                            results.push_back(make_pair(1, (*it).first.second));
                         }
                     }
                 }
@@ -177,18 +178,20 @@ vector<pair<int, string>> u_map::minTemp(int low)
                     }
                     else
                     {
+                        bool unique = true;
                         for (int j = 0; j < results.size(); j++)
                         {
                             if (results.at(j).second == (*it).first.second)
                             {
                                 results.at(j).first++;
+                                unique = false;
                                 break;
                             }
-                            else
-                            {
-                                results.push_back(make_pair(1, (*it).first.second));
-                                break;
-                            }
+                        }
+                        
+                        if (unique)
+                        {
+                            results.push_back(make_pair(1, (*it).first.second));
                         }
                     }
                 }
@@ -221,18 +224,20 @@ vector<pair<int, string>> u_map::maxTemp(int high)
                     }
                     else
                     {
+                        bool unique = true;
                         for (int j = 0; j < results.size(); j++)
                         {
                             if (results.at(j).second == (*it).first.second)
                             {
                                 results.at(j).first++;
+                                unique = false;
                                 break;
                             }
-                            else
-                            {
-                                results.push_back(make_pair(1, (*it).first.second));
-                                break;
-                            }
+                        }
+                        
+                        if (unique)
+                        {
+                            results.push_back(make_pair(1, (*it).first.second));
                         }
                     }
                 }
@@ -265,18 +270,20 @@ vector<pair<int, string>> u_map::windSpd(int low, int high)
                     }
                     else
                     {
+                        bool unique = true;
                         for (int j = 0; j < results.size(); j++)
                         {
                             if (results.at(j).second == (*it).first.second)
                             {
                                 results.at(j).first++;
+                                unique = false;
                                 break;
                             }
-                            else
-                            {
-                                results.push_back(make_pair(1, (*it).first.second));
-                                break;
-                            }
+                        }
+                        
+                        if (unique)
+                        {
+                            results.push_back(make_pair(1, (*it).first.second));
                         }
                     }
                 }
@@ -309,18 +316,20 @@ vector<pair<int, string>> u_map::precip(int low, int high)
                     }
                     else
                     {
+                        bool unique = true;
                         for (int j = 0; j < results.size(); j++)
                         {
                             if (results.at(j).second == (*it).first.second)
                             {
                                 results.at(j).first++;
+                                unique = false;
                                 break;
                             }
-                            else
-                            {
-                                results.push_back(make_pair(1, (*it).first.second));
-                                break;
-                            }
+                        }
+                        
+                        if (unique)
+                        {
+                            results.push_back(make_pair(1, (*it).first.second));
                         }
                     }
                 }
