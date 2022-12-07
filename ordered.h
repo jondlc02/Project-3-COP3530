@@ -60,9 +60,6 @@ private:
     vector <pair <int, string> > maxTempHelper(Node *node, double max);
     vector <pair <int, string> > windSpeedHelper(Node *node, double low, double high);
     vector <pair <int, string> > precipitationHelper(Node *node, double low, double high);
-    bool searchVector(vector <pair <int, string> > results, string location);
-
-
 
 public:
     Node *root;

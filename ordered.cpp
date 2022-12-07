@@ -296,14 +296,6 @@ vector <pair <int, string>> weatherMap::precipitationHelper(Node *node, double l
     return results;
 }
 
-bool weatherMap::searchVector(vector <pair <int, string>> results, string location) {
-    for (auto p : results) {
-        if (p.second == location)
-            return true;
-    }
-    return false;
-}
-
 // Rotate helper functions based off class slides
 Node *weatherMap::rotateLeft(Node *node) {
     Node *grandchild = node->right->left;
