@@ -46,6 +46,7 @@ void weatherMap::addData()
     }
 }
 
+// Both actual code and pseudocode was referenced from my (Max Techoueyres) AVL Tree from Project 1
 // Constructor && Destructor
 weatherMap::weatherMap() {
     root = nullptr;
@@ -56,12 +57,13 @@ weatherMap::~weatherMap() {
     deleteMap(root);
 }
 
-// Main functions
+// Insert Method and Helper
+// Adds a node to the AVL Tree with all the data points while simultaneously making sure it stays balanced with rotations
 void weatherMap::insert(pair <string, string> dateLocation, double avgTemp, double minTemp, double maxTemp, double precipitation, double windSpeed) {
     this->root = insertHelper(this->root, dateLocation, avgTemp, minTemp, maxTemp, precipitation, windSpeed);
 }
 
-// Main Function Helpers
+
 Node* weatherMap::insertHelper(Node *&root, pair <string, string> dateLocation, double avgTemp, double minTemp, double maxTemp, double precipitation, double windSpeed) {
     if (root == nullptr) {
         root = new Node(dateLocation, avgTemp, minTemp, maxTemp, precipitation, windSpeed);
@@ -120,13 +122,21 @@ vector <pair <int, string>> weatherMap::precipitation(double low, double high) {
 
 // Main command function helpers
 vector <pair <int, string>> weatherMap::avgTempHelper(Node *node, double low, double high) {
+    /*
+     * Takes two ints as input, low and high.
+     * low acts as floor for avgTemp and high acts as ceiling.
+     * Adds locations to vector if their avgTemp data point is within range.
+     * If the location already exists in the vector it increases its frequency by one
+     * Location name is stored as the second part of the pair
+     * Frequency is stored as the first part of the pair
+     */
     if (node == nullptr)
         return results;
     else {
         avgTempHelper(node->left, low, high);
         if (node->avgTemp >= low && node->avgTemp <= high) 
         {
-            if (results.size() == 0)
+            if (results.size() == 0) // Case where results are still empty
             {
                 results.push_back(make_pair(1, node->dateLocation.second));
             }
@@ -135,14 +145,14 @@ vector <pair <int, string>> weatherMap::avgTempHelper(Node *node, double low, do
                 bool unique = true;
                 for (int j = 0; j < results.size(); j++)
                 {
-                    if (results.at(j).second == node->dateLocation.second)
+                    if (results.at(j).second == node->dateLocation.second) // Case where location already exists in results
                     {
                         unique = false;
                         results.at(j).first++;
                         break;
                     }
                 }
-                if (unique)
+                if (unique) // Case where location does not exist in results yet
                 {
                     results.push_back(make_pair(1, node->dateLocation.second));
                 }
@@ -151,12 +161,24 @@ vector <pair <int, string>> weatherMap::avgTempHelper(Node *node, double low, do
         avgTempHelper(node->right, low, high);
         
     }
+    // From https://www.geeksforgeeks.org/sort-c-stl/
     sort(results.begin(), results.end(), greater<pair<int, string>>());
+    // Sorts vector so locations with the greatest frequency are at the beginning for easy access
     return results;
     
 }
 
 vector <pair <int, string>> weatherMap::minTempHelper(Node *node, double min) {
+    /*
+     * Takes one int as input: low
+     * low acts as floor for minTemp.
+     * Adds locations to vector if their minTemp data point is greater than the input.
+     * If the location already exists in the vector it increases its frequency by one
+     * Location name is stored as the second part of the pair
+     * Frequency is stored as the first part of the pair
+     * Refer to avgTemp for more detailed comments on how this works.
+     * All the below functions function exactly the same.
+     */
     if (node == nullptr)
         return results;
     else 
@@ -192,6 +214,16 @@ vector <pair <int, string>> weatherMap::minTempHelper(Node *node, double min) {
 }
 
 vector <pair <int, string>> weatherMap::maxTempHelper(Node *node, double max) {
+    /*
+     * Takes one int as input: high
+     * low acts as ceiling for maxTemp.
+     * Adds locations to vector if their maxTemp data point is less than the input.
+     * If the location already exists in the vector it increases its frequency by one
+     * Location name is stored as the second part of the pair
+     * Frequency is stored as the first part of the pair
+     * Refer to avgTemp for more detailed comments on how this works.
+     * All the below functions function exactly the same.
+     */
     if (node == nullptr)
         return results;
     else {
@@ -227,6 +259,14 @@ vector <pair <int, string>> weatherMap::maxTempHelper(Node *node, double max) {
 }
 
 vector <pair <int, string>> weatherMap::windSpeedHelper(Node *node, double low, double high) {
+    /*
+     * Takes two ints as input, low and high.
+     * low acts as floor for windSpd and high acts as ceiling.
+     * Adds locations to vector if their windSpd data point is within range.
+     * If the location already exists in the vector it increases its frequency by one
+     * Location name is stored as the second part of the pair
+     * Frequency is stored as the first part of the pair
+     */
     if (node == nullptr)
         return results;
     else {
@@ -262,6 +302,14 @@ vector <pair <int, string>> weatherMap::windSpeedHelper(Node *node, double low, 
 }
 
 vector <pair <int, string>> weatherMap::precipitationHelper(Node *node, double low, double high) {
+    /*
+     * Takes two ints as input, low and high.
+     * low acts as floor for precip and high acts as ceiling.
+     * Adds locations to vector if their avgTemp data point is within range.
+     * If the location already exists in the vector it increases its frequency by one
+     * Location name is stored as the second part of the pair
+     * Frequency is stored as the first part of the pair
+     */
     if (node == nullptr)
         return results;
     else {
