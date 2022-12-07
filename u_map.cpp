@@ -200,6 +200,7 @@ vector<pair<int, string>> u_map::avgTemp(int low, int high)
     }
     // From https://www.geeksforgeeks.org/sort-c-stl/
     sort(results.begin(), results.end(), greater<pair<int, string>>());
+    return results;
     // Sorts vector so locations with the greatest frequency are at the beginning for easy access
 }
 
