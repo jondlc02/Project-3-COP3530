@@ -9,7 +9,9 @@ void weatherMap::addData()
 
     fstream file;
     file.open("weather.csv", ios::in);
-    //fstream file("weather.csv", ios::in);
+
+    // How to read csv from:
+    // https://java2blog.com/read-csv-file-in-cpp/#:~:text=To%20read%20a%20CSV%20file%2C,variable%20as%20its%20second%20argument.
     getline(file, line); //remove titles
     while (getline(file, line))
     {
