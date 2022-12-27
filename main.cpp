@@ -65,7 +65,7 @@ int main()
             {
                 cout << resultsUnordered[0].second;
             }
-            for (int i = 0; i < resultsUnordered.size(); i++)
+            for (int i = 1; i < resultsUnordered.size(); i++)
             {
                 if (resultsUnordered[i].first == resultsUnordered[0].first)
                 {
@@ -248,7 +248,7 @@ int main()
             {
                 cout << results[0].second;
             }
-            for (int i = 0; i < results.size(); i++)
+            for (int i = 1; i < results.size(); i++)
             {
                 if (results[i].first == results[0].first)
                 {
